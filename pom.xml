@@ -108,6 +108,7 @@
         <module>contrib-eventbus</module>
         <module>contrib-test-gwt</module>
         <module>contrib-network</module>
+        <module>contrib-introspection</module>
     </modules>
 
     <repositories>
@@ -225,6 +226,7 @@
               </executions>
             </plugin>
 
+<!--
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-gpg-plugin</artifactId>
@@ -239,13 +241,13 @@
                  </execution>
                </executions>
             </plugin>
-
+-->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
         </plugins>
