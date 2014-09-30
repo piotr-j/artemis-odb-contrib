@@ -6,10 +6,11 @@ import java.util.List;
 /**
  * @author Daan van Yperen
  */
-public class Method {
-	public String name;
-	public Boolean sticky = false;
-	public List<Parameter> parameters = new ArrayList<>();
+public class Method implements Comparable<Method> {
+	protected String name;
+	protected Boolean sticky = false;
+	protected List<Parameter> parameters = new ArrayList<>();
+	protected boolean constructor = false;
 
 	public Method() {
 	}
@@ -41,5 +42,19 @@ public class Method {
 
 	public void setSticky(Boolean sticky) {
 		this.sticky = sticky;
+	}
+
+
+	@Override
+	public int compareTo(Method o) {
+		return name.compareTo(o.name);
+	}
+
+	public void setConstructor(boolean constructor) {
+		this.constructor = constructor;
+	}
+
+	public boolean isConstructor() {
+		return constructor;
 	}
 }

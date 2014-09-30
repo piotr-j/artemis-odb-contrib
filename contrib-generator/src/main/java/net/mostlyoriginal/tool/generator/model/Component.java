@@ -6,10 +6,10 @@ import java.util.List;
 /**
  * @author Daan van Yperen
  */
-public class Component {
-	public String name;
-	public String simpleName;
-	public List<Method> methods = new ArrayList<Method>();
+public class Component implements Comparable<Component> {
+	protected String name;
+	protected String simpleName;
+	protected List<Method> methods = new ArrayList<Method>();
 
 	public Component() {
 	}
@@ -46,5 +46,10 @@ public class Component {
 
 	public void setMethods(List<Method> methods) {
 		this.methods = methods;
+	}
+
+	@Override
+	public int compareTo(Component o) {
+		return simpleName.compareTo(o.simpleName);
 	}
 }

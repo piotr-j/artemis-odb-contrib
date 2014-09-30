@@ -13,6 +13,7 @@ import org.reflections.Reflections;
 import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -26,14 +27,17 @@ public class Generator {
 		Component[] components = new JarReflectionsComponentCollectionStrategy(new File("E:\\GitHub\\arktrail\\desktop\\build\\libs\\desktop-1.0.jar")).getComponents();
 
 		Configuration cfg = new Configuration();
-		cfg.setClassForTemplateLoading(Generator.class,"/");
+		cfg.setClassForTemplateLoading(Generator.class, "/");
 		try {
 			Template template = cfg.getTemplate("Factory.java.ftl");
 
 			Factory factory = new Factory("Ship");
 			for (Component component : components) {
-				factory.components.add(component);
+				Collections.sort(component.getMethods());
+				factory.getComponents().add(component);
 			}
+
+			Collections.sort(factory.getComponents());
 
 			/*
 			Method pos = new Method("pos", false);

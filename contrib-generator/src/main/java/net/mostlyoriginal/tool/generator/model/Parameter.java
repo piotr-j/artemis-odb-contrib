@@ -4,8 +4,8 @@ package net.mostlyoriginal.tool.generator.model;
  * @author Daan van Yperen
  */
 public class Parameter {
-	public String name;
-	public String type;
+	protected String name;
+	protected String type;
 
 	public Parameter() {
 	}

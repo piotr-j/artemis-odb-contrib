@@ -9,8 +9,8 @@ import java.util.Set;
  */
 public class Factory {
 
-	public String type;
-	public List<Component> components = new ArrayList<>();
+	protected String type;
+	protected List<Component> components = new ArrayList<>();
 
 	public Factory() {
 	}

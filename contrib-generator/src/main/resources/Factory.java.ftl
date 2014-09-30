@@ -12,7 +12,7 @@ import ${c.name};
 public interface ${type} extends EntityFactory<${type}> {
     <#list components as c>
     <#list c.methods as m>
-    ${type} <#if m.sticky>@Sticky </#if>${m.name}(<#list m.parameters as p>${p.type} ${p.name}<#if p_has_next>, </#if></#list>);
+    ${type} <#if m.sticky>@Sticky </#if>${m.name}(<#list m.parameters as p>${p.type} ${p.name}<#if p_has_next>, </#if></#list>); <#if m.constructor>// constructor based.</#if>
     </#list>
     </#list>
 }

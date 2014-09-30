@@ -6,6 +6,7 @@ import net.mostlyoriginal.tool.generator.model.Parameter;
 import org.reflections.Reflections;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,11 +21,10 @@ public class JarReflectionsComponentCollectionStrategy implements ComponentColle
 
 	private final URLClassLoader urlClassLoader;
 
-	public JarReflectionsComponentCollectionStrategy( File file ) {
+	public JarReflectionsComponentCollectionStrategy(File file) {
 		try {
 			urlClassLoader = new URLClassLoader(new URL[]{file.toURI().toURL()}, System.class.getClassLoader());
-		} catch (MalformedURLException e)
-		{
+		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -47,11 +47,38 @@ public class JarReflectionsComponentCollectionStrategy implements ComponentColle
 
 	protected Component wrapComponent(Class<? extends com.artemis.Component> subType) {
 		final Component component = new Component(subType);
-		Method pos = new Method(component.getSimpleName().toLowerCase(), false);
-		for (Field field : subType.getDeclaredFields()) {
-			pos.parameters.add(new Parameter(field.getType().getSimpleName(),field.getName()));
+
+		if (subType.getConstructors().length > 0) {
+
+			// use constructors. add one per constructor.
+			int index=0;
+			for (Constructor<?> constructor : subType.getConstructors()) {
+				Method pos = new Method(component.getSimpleName().toLowerCase(), false);
+				pos.setConstructor(true);
+				for (Class<?> aClass : constructor.getParameterTypes()) {
+					pos.getParameters().add(new Parameter(aClass.getSimpleName(), "arg"+index++));
+				}
+
+				if (pos.getParameters().size() > 0) {
+					component.getMethods().add(pos);
+				}
+			}
+
 		}
-		component.methods.add(pos);
+
+		Method pos = new Method(component.getSimpleName().toLowerCase(), false);
+		// fallback to fields
+		for (Field field : subType.getDeclaredFields()) {
+				if ( java.lang.reflect.Modifier.isStatic(field.getModifiers())
+					 || !java.lang.reflect.Modifier.isPublic(field.getModifiers())
+			         || java.lang.reflect.Modifier.isFinal(field.getModifiers()))
+				continue;
+				pos.getParameters().add(new Parameter(field.getType().getSimpleName(), field.getName()));
+		}
+		if (pos.getParameters().size() > 0) {
+			component.getMethods().add(pos);
+		}
+
 		return component;
 	}
 }
