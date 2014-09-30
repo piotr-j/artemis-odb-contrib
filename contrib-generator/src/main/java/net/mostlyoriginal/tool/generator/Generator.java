@@ -3,12 +3,17 @@ package net.mostlyoriginal.tool.generator;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import net.mostlyoriginal.tool.generator.common.JarReflectionsComponentCollectionStrategy;
 import net.mostlyoriginal.tool.generator.model.Component;
 import net.mostlyoriginal.tool.generator.model.Factory;
 import net.mostlyoriginal.tool.generator.model.Method;
 import net.mostlyoriginal.tool.generator.model.Parameter;
+import org.reflections.Reflections;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Set;
 
 /**
  * @author Daan van Yperen
@@ -17,16 +22,20 @@ public class Generator {
 
 	public static void main( String[] args)
 	{
+
+		Component[] components = new JarReflectionsComponentCollectionStrategy(new File("E:\\GitHub\\arktrail\\desktop\\build\\libs\\desktop-1.0.jar")).getComponents();
+
 		Configuration cfg = new Configuration();
 		cfg.setClassForTemplateLoading(Generator.class,"/");
 		try {
 			Template template = cfg.getTemplate("Factory.java.ftl");
 
 			Factory factory = new Factory("Ship");
-			factory.components.add(new Component("net.mostlyoriginal.api.basic.Pos", "Pos"));
-			factory.components.add(new Component("net.mostlyoriginal.api.basic.Angle", "Angle"));
-			factory.components.add(new Component("net.mostlyoriginal.api.basic.Sprite", "Sprite"));
+			for (Component component : components) {
+				factory.components.add(component);
+			}
 
+			/*
 			Method pos = new Method("pos", false);
 			pos.parameters.add(new Parameter("float","x"));
 			pos.parameters.add(new Parameter("float","y"));
@@ -34,7 +43,7 @@ public class Generator {
 
 			Method sprite = new Method("sprite", true);
 			sprite.parameters.add(new Parameter("String","id"));
-			factory.methods.add(sprite);
+			factory.methods.add(sprite);*/
 
 			// Console output
 			Writer out = new OutputStreamWriter(System.out);

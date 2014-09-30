@@ -8,9 +8,11 @@ import ${c.name};
 /**
  * Entity factory for ${type}.
  */
-@CRef({<#list components as c>${c.simpleName}.class<#if c_has_next>,</#if></#list>})
+@CRef({<#list components as c>${c.simpleName}.class<#if c_has_next>, </#if></#list>})
 public interface ${type} extends EntityFactory<${type}> {
-    <#list methods as m>
-    ${type} <#if m.sticky>@Sticky </#if>${m.name}(<#list m.parameters as p>${p.type} ${p.name}<#if p_has_next>,</#if></#list>);
+    <#list components as c>
+    <#list c.methods as m>
+    ${type} <#if m.sticky>@Sticky </#if>${m.name}(<#list m.parameters as p>${p.type} ${p.name}<#if p_has_next>, </#if></#list>);
+    </#list>
     </#list>
 }

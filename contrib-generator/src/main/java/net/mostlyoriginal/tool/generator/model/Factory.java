@@ -10,7 +10,6 @@ import java.util.Set;
 public class Factory {
 
 	public String type;
-	public List<Method> methods = new ArrayList<>();
 	public List<Component> components = new ArrayList<>();
 
 	public Factory() {
@@ -18,14 +17,6 @@ public class Factory {
 
 	public Factory(String type) {
 		this.type = type;
-	}
-
-	public List<Method> getMethods() {
-		return methods;
-	}
-
-	public void setMethods(List<Method> methods) {
-		this.methods = methods;
 	}
 
 	public List<Component> getComponents() {
