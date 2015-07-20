@@ -16,7 +16,7 @@ import org.junit.Before;
  */
 public abstract class NetworkIntegrationTest {
     public static final String TEST_HOST = "127.0.0.1";
-    public static final int TEST_PORT = 27015;
+    public static final int TEST_PORT = 27016;
     public MarshalSystem serverNetworkSystem;
     public MarshalSystem clientNetworkSystem;
 

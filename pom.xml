@@ -5,7 +5,7 @@
 
     <groupId>net.mostlyoriginal.artemis-odb</groupId>
     <artifactId>contrib-parent</artifactId>
-    <version>0.10.1</version>
+    <version>0.10.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>contrib-parent</name>
     <description>Drop-in extensions for artemis-odb. Prefab systems, components, networking, events!
@@ -109,7 +109,7 @@
         <module>contrib-eventbus</module>
         <module>contrib-test-gwt</module>
         <module>contrib-benchmark</module>
-        <module>contrib-network</module>
+        <!--<module>contrib-network</module>-->
     </modules>
 
     <repositories>
