@@ -5,7 +5,7 @@
 
     <groupId>net.mostlyoriginal.artemis-odb</groupId>
     <artifactId>contrib-parent</artifactId>
-    <version>0.9.2-SNAPSHOT</version>
+    <version>0.10.1</version>
     <packaging>pom</packaging>
     <name>contrib-parent</name>
     <description>Drop-in extensions for artemis-odb. Prefab systems, components, networking, events!
@@ -15,6 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <asm.version>4.1</asm.version>
+        <artemis-odb.version>0.10.1</artemis-odb.version>
     </properties>
 
     <scm>
@@ -60,29 +61,29 @@
             <dependency>
                 <groupId>net.onedaybeard.artemis</groupId>
                 <artifactId>artemis-odb-gwt</artifactId>
-                <version>0.9.1-SNAPSHOT</version>
+                <version>${artemis-odb.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.onedaybeard.artemis</groupId>
                 <artifactId>artemis-odb</artifactId>
-                <version>0.9.1-SNAPSHOT</version>
+                <version>${artemis-odb.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.onedaybeard.artemis</groupId>
                 <artifactId>artemis-odb-gwt</artifactId>
-                <version>0.9.1-SNAPSHOT</version>
+                <version>${artemis-odb.version}</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>
                 <groupId>net.onedaybeard.artemis</groupId>
                 <artifactId>artemis-odb</artifactId>
-                <version>0.9.1-SNAPSHOT</version>
+                <version>${artemis-odb.version}</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>
                 <groupId>com.badlogicgames.gdx</groupId>
-                <artifactId>gdx-backend-gwt</artifactId>
-                <version>1.6.1</version>
+                <artifactId>gdx</artifactId>
+                <version>1.6.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -178,6 +179,20 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -224,21 +239,6 @@
                   </goals>
                 </execution>
               </executions>
-            </plugin>
-
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-gpg-plugin</artifactId>
-               <version>1.5</version>
-               <executions>
-                 <execution>
-                   <id>sign-artifacts</id>
-                   <phase>verify</phase>
-                   <goals>
-                     <goal>sign</goal>
-                   </goals>
-                 </execution>
-               </executions>
             </plugin>
 
             <plugin>
