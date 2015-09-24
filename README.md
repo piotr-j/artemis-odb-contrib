@@ -3,8 +3,8 @@ artemis-odb-contrib
 
 [![Build Status](https://travis-ci.org/DaanVanYperen/artemis-odb-contrib.svg)](https://travis-ci.org/DaanVanYperen/artemis-odb-contrib)
 
-Drop-in extensions for artemis-odb. Event bus, deferred systems, prefab
-systems, components and networking. Well, eventually anyway.
+Drop-in extensions for artemis-odb. Event bus, scheduled operations, deferred systems, profiler, abstract and prefab
+systems, plugin api, components and networking. Well, eventually anyway.
 
 ### When to use this
 If you want to quickly prototype a game without getting bogged down by the
@@ -18,7 +18,7 @@ with gwt support, check out these instead:
 - [playn-artemis-quickstart](https://github.com/DaanVanYperen/playn-artemis-quickstart)
 
 ### Library Versions
-Artemis-odb 0.11.4, (Optional) LibGDX 1.6.4
+Artemis-odb 0.12.1, (Optional) LibGDX 1.6.5
 
 ### License
 The primary license for this code is CC0.
@@ -31,13 +31,13 @@ The primary license for this code is CC0.
 <dependency>
   <groupId>net.mostlyoriginal.artemis-odb</groupId>
   <artifactId>contrib-core</artifactId>
-  <version>0.11.4</version>
+  <version>1.0.0</version>
 </dependency>
 
 <dependency>
   <groupId>net.mostlyoriginal.artemis-odb</groupId>
   <artifactId>contrib-eventbus</artifactId>
-  <version>0.11.4</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ The primary license for this code is CC0.
 
 ```groovy
 dependencies { 
-    compile "net.mostlyoriginal.artemis-odb:contrib-core:0.11.4"
-    compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:0.11.4"
+    compile "net.mostlyoriginal.artemis-odb:contrib-core:1.0.0"
+    compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:1.0.0"
 }
 ```

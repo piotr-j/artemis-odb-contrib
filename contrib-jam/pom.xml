@@ -5,12 +5,12 @@
     <parent>
         <groupId>net.mostlyoriginal.artemis-odb</groupId>
         <artifactId>contrib-parent</artifactId>
-        <version>0.11.4</version>
+        <version>1.0.0</version>
     </parent>
     <artifactId>contrib-jam</artifactId>
     <packaging>jar</packaging>
     <name>contrib-jam</name>
-    <description>Daan's jam bundle of systems and components!</description>
+    <description>Jam bundle of systems and components!</description>
 
     <dependencies>
         <dependency>
@@ -23,8 +23,19 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>net.mostlyoriginal.artemis-odb</groupId>
+            <artifactId>contrib-plugin-operations</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
+            <version>${libgdx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

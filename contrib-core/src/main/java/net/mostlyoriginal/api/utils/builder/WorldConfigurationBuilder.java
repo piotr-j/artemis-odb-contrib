@@ -2,6 +2,7 @@ package net.mostlyoriginal.api.utils.builder;
 
 import com.artemis.BaseSystem;
 import com.artemis.Manager;
+import com.artemis.SystemInvocationStrategy;
 import com.artemis.WorldConfiguration;
 import com.artemis.injection.CachedInjector;
 import com.artemis.injection.FieldHandler;
@@ -26,6 +27,7 @@ public class WorldConfigurationBuilder {
 
 	private ArtemisPlugin activePlugin;
 	private final InjectionCache cache;
+	private SystemInvocationStrategy invocationStrategy;
 
 	public WorldConfigurationBuilder() {
 		reset();
@@ -43,8 +45,15 @@ public class WorldConfigurationBuilder {
 		registerManagers(config);
 		registerSystems(config);
 		registerFieldResolvers(config);
+		registerInvocationStrategies(config);
 		reset();
 		return config;
+	}
+
+	private void registerInvocationStrategies(WorldConfiguration config) {
+		if ( invocationStrategy != null ) {
+			config.setInvocationStrategy(invocationStrategy);
+		}
 	}
 
 	/**
@@ -104,6 +113,7 @@ public class WorldConfigurationBuilder {
 	 * Reset builder
 	 */
 	private void reset() {
+		invocationStrategy = null;
 		managers = new Bag<>();
 		systems = new Bag<>();
 		fieldResolvers = new Bag<>();
@@ -120,6 +130,17 @@ public class WorldConfigurationBuilder {
 		for (FieldResolver fieldResolver : fieldResolvers) {
 			this.fieldResolvers.add(Registerable.of(fieldResolver));
 		}
+		return this;
+	}
+
+	/**
+	 * Add system invocation strategy.
+	 *
+	 * @param strategy strategy to invoke.
+	 * @return this
+	 */
+	public WorldConfigurationBuilder register(SystemInvocationStrategy strategy) {
+		this.invocationStrategy = strategy;
 		return this;
 	}
 
@@ -369,6 +390,7 @@ public class WorldConfigurationBuilder {
 	public static abstract class Priority {
 		public static final int LOWEST = Integer.MIN_VALUE;
 		public static final int LOW = -10000;
+		public static final int OPERATIONS = -1000;
 		public static final int NORMAL = 0;
 		public static final int HIGH = 10000;
 		public static final int HIGHEST = Integer.MAX_VALUE;

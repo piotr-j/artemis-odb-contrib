@@ -1,6 +1,8 @@
 package net.mostlyoriginal.api.plugin.extendedcomponentmapper;
 
 import com.artemis.*;
+import com.artemis.utils.reflect.ClassReflection;
+import net.mostlyoriginal.api.component.common.Mirrorable;
 
 /**
  * Extended Component Mapper.
@@ -15,6 +17,7 @@ public class M<A extends Component> {
 	private final EntityTransmuter createTransmuter;
 	private final EntityTransmuter removeTransmuter;
 	private final Entity flyweight;
+	private final boolean isMirrorable;
 
 	@SuppressWarnings("unchecked")
 	public M( Class<? extends Component> type, World world) {
@@ -22,6 +25,12 @@ public class M<A extends Component> {
 		flyweight = Entity.createFlyweight(world);
 		createTransmuter = new EntityTransmuterFactory(world).add(type).build();
 		removeTransmuter = new EntityTransmuterFactory(world).remove(type).build();
+
+		isMirrorable = ClassReflection.isAssignableFrom(net.mostlyoriginal.api.component.common.Mirrorable.class, type);
+	}
+
+	public boolean isMirrorable() {
+		return isMirrorable;
 	}
 
 	/**
@@ -63,6 +72,80 @@ public class M<A extends Component> {
 			component = get(entityId);
 		}
 		return component;
+	}
+
+	/**
+	 * Create or remove a component from an entity.
+	 *
+	 * Does nothing if already removed or created respectively.
+	 *
+	 * @param entityId Entity id to change.
+	 * @param value {@code true} to create component (if missing), {@code false} to remove (if exists).
+	 * @return the instance of the component, or {@code null} if removed.
+	 */
+	public A set(int entityId, boolean value) {
+		if ( value ) {
+			return create(entityId);
+		} else {
+			remove(entityId);
+			return null;
+		}
+	}
+
+	/**
+	 * Mirror component between entities.
+	 *
+	 * 1. calls target#set(source) if source exists.
+	 * 2. removes target if source is missing.
+	 *
+	 * Requires component to extend from {@code ExtendedComponent}.
+	 *
+	 * @param targetId target entity id
+	 * @param sourceId source entity id
+	 * @return the instance of the component, or {@code null} if removed.
+	 */
+	@SuppressWarnings("unchecked")
+	public A mirror(int targetId, int sourceId) {
+		if ( !isMirrorable) {
+			throw new RuntimeException("Component does not extend ExtendedComponent<T> or just Mirrorable<T>, required for #set.");
+		}
+
+		final A source = getSafe(sourceId);
+		if ( source != null ) {
+			return (A) ((Mirrorable)create(targetId)).set(source);
+		} else {
+			remove(targetId);
+			return null;
+		}
+	}
+
+	/**
+	 * Mirror component between entities.
+	 *
+	 * 1. calls target#set(source) if source exists.
+	 * 2. removes target if source is missing.
+	 *
+	 * Requires component to extend from {@code ExtendedComponent}.
+	 *
+	 * @param target target entity
+	 * @param source source entity
+	 * @return the instance of the component, or {@code null} if removed.
+	 */
+	public A mirror(Entity target, Entity source) {
+		return mirror(target.getId(), source.getId());
+	}
+
+	/**
+	 * Create or remove a component from an entity.
+	 *
+	 * Does nothing if already removed or created respectively.
+	 *
+	 * @param entity Entity to change.
+	 * @param value {@code true} to create component (if missing), {@code false} to remove (if exists).
+	 * @return the instance of the component, or {@code null} if removed.
+	 */
+	public A set(Entity entity, boolean value) {
+		return set(entity.getId(), value);
 	}
 
 	/**
@@ -137,8 +220,8 @@ public class M<A extends Component> {
 		return mapper.has(entityId);
 	}
 
-	public static <T extends Component> ComponentMapper<T> getFor(Class<T> type, World world) {
-		return ComponentMapper.getFor(type, world);
+	public static <T extends Component> M<T> getFor(Class<T> type, World world) {
+		return world.getManager(ExtendedComponentMapperManager.class).getFor(type);
 	}
 
 	public A get(Entity e, boolean forceNewInstance) throws ArrayIndexOutOfBoundsException {
